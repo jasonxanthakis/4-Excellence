@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "setup-db": "node ./db/setup.js"
+    "setup-db": "node ./db/setup.js",
+    "test": "jest --watchAll --verbose --detectOpenHandles --runInBand",
+    "coverage": "jest --coverage"
   },
   "author": "",
   "license": "MIT",
@@ -20,6 +22,8 @@
     "pg": "^8.8.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "jest": "^30.0.4",
+    "nodemon": "^3.0.1",
+    "supertest": "^7.1.3"
   }
 }
