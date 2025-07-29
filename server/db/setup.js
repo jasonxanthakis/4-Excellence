@@ -27,4 +27,8 @@ async function setUpAll() {
     db.end();
 };
 
-setUpAll();
+if (require.main === module) {
+  setUpAll();
+}
+
+module.exports = setUpAll;
