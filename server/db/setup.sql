@@ -13,41 +13,75 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 ---
---- drop tables
+--- Drop tables in reverse dependency order
 ---
 
-DROP TABLE IF EXISTS Users CASCADE;
-DROP TABLE IF EXISTS Teachers CASCADE;
-DROP TABLE IF EXISTS Students CASCADE;
-DROP TABLE IF EXISTS Subjects CASCADE;
-DROP TABLE IF EXISTS Games CASCADE;
-DROP TABLE IF EXISTS Quiz_Games CASCADE;
-DROP TABLE IF EXISTS Quiz_Questions CASCADE;
-DROP TABLE IF EXISTS Classes CASCADE;
 DROP TABLE IF EXISTS Student_Stats CASCADE;
 DROP TABLE IF EXISTS Students_To_Classes CASCADE;
 DROP TABLE IF EXISTS Games_To_Classes CASCADE;
+DROP TABLE IF EXISTS Quiz_Questions CASCADE;
+DROP TABLE IF EXISTS Quiz_Games CASCADE;
+DROP TABLE IF EXISTS Games CASCADE;
+DROP TABLE IF EXISTS Classes CASCADE;
+DROP TABLE IF EXISTS Students CASCADE;
+DROP TABLE IF EXISTS Teachers CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Subjects CASCADE;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Create tables in proper dependency order
 --
 
---
--- Name: teachers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
+-- Base tables with no dependencies
+CREATE TABLE Users(
+  user_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL, 
+  is_teacher BOOLEAN NOT NULL
+);
 
---
--- Name: students; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
+CREATE TABLE Subjects(
+  subject_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  subject VARCHAR(50) NOT NULL
+);
 
---
--- Name: subjects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
+-- Tables that depend on Users
+CREATE TABLE Teachers (
+  teacher_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id INT NOT NULL,
+  school_name VARCHAR(50) NOT NULL,
+  CONSTRAINT fk_teacher_user
+    FOREIGN KEY (user_id)
+    REFERENCES Users(user_id)
+    ON DELETE CASCADE
+);
 
---
--- Name: games; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
+CREATE TABLE Students(
+  student_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  user_id INT NOT NULL,
+  CONSTRAINT fk_student_user
+    FOREIGN KEY (user_id)
+    REFERENCES Users(user_id)
+    ON DELETE CASCADE
+);
 
+-- Tables that depend on Teachers and Subjects
+CREATE TABLE Classes(
+  class_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  class_name VARCHAR(50) NOT NULL,
+  teacher_id INT NOT NULL,
+  subject_id INT NOT NULL,
+  CONSTRAINT fk_class_teacher
+    FOREIGN KEY (teacher_id)
+    REFERENCES Teachers(teacher_id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_class_subject
+    FOREIGN KEY (subject_id)
+    REFERENCES Subjects(subject_id)
+    ON DELETE CASCADE
+);
+
+-- Games table (depends on Subjects)
 CREATE TABLE Games (
     game_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     game_name VARCHAR(50) NOT NULL,
@@ -55,18 +89,12 @@ CREATE TABLE Games (
     subject_id INT REFERENCES Subjects(subject_id) ON DELETE CASCADE
 );
 
---
--- Name: quiz_games; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
+-- Quiz_Games table (depends on Games)
 CREATE TABLE Quiz_Games (
     game_id INT PRIMARY KEY REFERENCES Games(game_id) ON DELETE CASCADE
 );
 
---
--- Name: quiz_questions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
+-- Quiz_Questions table (depends on Quiz_Games and Subjects)
 CREATE TABLE Quiz_Questions (
     question_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     game_id INT REFERENCES Quiz_Games(game_id) ON DELETE CASCADE,
@@ -80,27 +108,12 @@ CREATE TABLE Quiz_Questions (
     difficulty VARCHAR(30) NOT NULL
 );
 
---
--- Name: classes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
---
--- Name: student_stats; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
---
--- Name: students_to_classes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
+-- Junction tables (depend on multiple tables)
 CREATE TABLE Students_To_Classes (
     student_id INT REFERENCES Students(student_id) ON DELETE CASCADE,
     class_id INT REFERENCES Classes(class_id) ON DELETE CASCADE,
     PRIMARY KEY (student_id, class_id)
 );
-
---
--- Name: game_to_classes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
 
 CREATE TABLE Games_To_Classes (
     game_id INT REFERENCES Games(game_id) ON DELETE CASCADE,
@@ -108,15 +121,25 @@ CREATE TABLE Games_To_Classes (
     PRIMARY KEY (game_id, class_id)
 );
 
-
-
+-- Stats table (depends on Students and Games)
+CREATE TABLE Student_Stats(
+  student_id INT NOT NULL,
+  game_id INT NOT NULL,
+  times_played INT NOT NULL,
+  avg_score INT NOT NULL,
+  best_score INT NOT NULL,
+  last_score INT NOT NULL,
+  CONSTRAINT pk_student_stats PRIMARY KEY (student_id, game_id),
+  CONSTRAINT fk_student_stats_student FOREIGN KEY (student_id)
+      REFERENCES Students(student_id)
+      ON DELETE CASCADE,
+  CONSTRAINT fk_student_stats_game FOREIGN KEY (game_id)
+      REFERENCES Games(game_id)
+      ON DELETE CASCADE
+);
 
 --
--- PostgreSQL data dump
---
-
---
--- Data for Name: subjects; Type: TABLE DATA; Schema: public; Owner: -
+-- Insert sample data
 --
 
 INSERT INTO subjects (subject) 
@@ -125,21 +148,13 @@ VALUES
   ('History'),
   ('Literature');
 
---
--- Data for Name: games; Type: TABLE DATA; Schema: public; Owner: -
---
-
 INSERT INTO Games (game_name, game_type, subject_id) 
 VALUES
   ('Geography Quiz', 'Quiz', 1),
   ('History Quiz', 'Quiz', 2),
   ('Literature Quiz', 'Quiz', 3);
 
---
--- Data for Name: qui_games; Type: TABLE DATA; Schema: public; Owner: -
---
-
-INSERT INTO quiz_games (game_id) 
+INSERT INTO Quiz_Games (game_id) 
 VALUES 
   (1),
   (2),
