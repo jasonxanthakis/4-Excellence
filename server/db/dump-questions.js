@@ -13,10 +13,10 @@ function generateInsertStatements(jsonPath) {
     let values = '';
 
     const inserts = questions.map((q) => {
-        values = values + '\n' + `('${q.question}', '${formatArray(q.options)}', '${q.answer}', '${q.topic}', '${q.subcategory}', '${q.type}', '${q.difficulty}', (SELECT game_id FROM games WHERE subject_id = (SELECT subject_id FROM subjects WHERE subject = '${q.subject}' LIMIT 1) LIMIT 1), (SELECT subject_id FROM subjects WHERE subject = '${q.subject}' LIMIT 1))` + ',';
+        values = values + `('${q.question}', '${formatArray(q.options)}', '${q.answer}', '${q.topic}', '${q.subcategory}', '${q.type}', '${q.difficulty}', (SELECT game_id FROM games WHERE subject_id = (SELECT subject_id FROM subjects WHERE subject = '${q.subject}' LIMIT 1) LIMIT 1), (SELECT subject_id FROM subjects WHERE subject = '${q.subject}' LIMIT 1))` + ', ';
     });
 
-    values = values.substring(0, values.length - 1);
+    values = values.substring(0, values.length - 2);
 
     return `INSERT INTO quiz_questions (question, options, answer, topic, subcategory, question_type, difficulty, game_id, subject_id) VALUES ${values};`;
 };
