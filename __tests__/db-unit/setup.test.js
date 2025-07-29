@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 let filepath = path.join(__dirname, '..', '..', 'server', 'db', 'dump-questions.js');
