@@ -125,10 +125,10 @@ CREATE TABLE Games_To_Classes (
 CREATE TABLE Student_Stats(
   student_id INT NOT NULL,
   game_id INT NOT NULL,
-  times_played INT NOT NULL,
-  avg_score INT NOT NULL,
-  best_score INT NOT NULL,
-  last_score INT NOT NULL,
+  times_played SMALLINT DEFAULT 0,
+  avg_score SMALLINT DEFAULT 0,
+  best_score SMALLINT DEFAULT 0,
+  last_score SMALLINT DEFAULT 0,
   CONSTRAINT pk_student_stats PRIMARY KEY (student_id, game_id),
   CONSTRAINT fk_student_stats_student FOREIGN KEY (student_id)
       REFERENCES Students(student_id)
