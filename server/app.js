@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 
-const userRouter = require('./routers/routers');
+const logRoutes = require('./middleware/logger.js');
+const userRouter = require('./routers/user.js');
+
 const app = express();
+
 app.use(cors());
-
 app.use(express.json());
-app.use('/user', userRouter);
-//app.use('/quiz', quizRouter)
-
+app.use(logRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
     description: "Homepage"
   })
 })
+
+app.use('/user', userRouter);
+app.use('/game', gameRouter);
 
 module.exports = app; 
 
