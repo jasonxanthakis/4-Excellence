@@ -58,7 +58,14 @@ input{
   justify-content: space-between;
 }
 
-#logIn{
+#studentlogin{
+    /* background-color: rgba(135, 236, 135, 0.822); */
+    margin: 10px;
+    padding:5px;
+    border-radius: 10px;
+    border-color: rgba(11, 11, 11, 0.556);
+}
+#teacherlogin{
     /* background-color: rgba(135, 236, 135, 0.822); */
     margin: 10px;
     padding:5px;
