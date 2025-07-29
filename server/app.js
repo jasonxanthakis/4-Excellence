@@ -1,15 +1,17 @@
 const express = require('express');
-const cors = require('cors');
+const userRouter = require('./routers/userRouter');
+const gameRouter = require('./routers/gameRouter');
 
-const userRouter = require('./routers/routers');
 const app = express();
-app.use(cors());
 
+// Basic JSON parsing (required for POST/PUT requests)
 app.use(express.json());
-app.use('/user', userRouter);
-//app.use('/quiz', quizRouter)
 
+// Routes (exactly as you requested)
+app.use('/user', userRouter); // user routes: /users/___
+app.use('/game', gameRouter); // game routes: game/_____
 
+// Optional: Basic homepage route
 app.get("/", (req, res) => {
   res.status(200).json({
     title: "Educational Quiz Game",
@@ -17,6 +19,6 @@ app.get("/", (req, res) => {
   })
 })
 
-module.exports = app; 
+module.exports = app;
 
 
