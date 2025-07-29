@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const logRoutes = require('./middleware/logger.js');
 const userRouter = require('./routers/user.js');
+const gameRouter = require('./controllers/game.js');
 
 const app = express();
 
