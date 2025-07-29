@@ -101,7 +101,7 @@ CREATE TABLE Quiz_Questions (
     subject_id INT REFERENCES Subjects(subject_id) ON DELETE CASCADE,
     question VARCHAR(150) NOT NULL,
     options JSONB NOT NULL,
-    answer VARCHAR(30) NOT NULL,
+    answer VARCHAR(50) NOT NULL,
     topic VARCHAR(30) NOT NULL,
     subcategory VARCHAR(30) NOT NULL,
     question_type VARCHAR(30) NOT NULL,

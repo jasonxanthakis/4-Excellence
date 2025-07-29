@@ -3,8 +3,8 @@ const userRouter = require('./routers/userRouter');
 const gameRouter = require('./routers/gameRouter');
 
 const app = express();
+app.use(cors());
 
-// Basic JSON parsing (required for POST/PUT requests)
 app.use(express.json());
 
 // Routes (exactly as you requested)
@@ -18,6 +18,9 @@ app.get("/", (req, res) => {
     description: "Homepage"
   })
 })
+
+app.use('/user', userRouter);
+app.use('/game', gameRouter);
 
 module.exports = app;
 
