@@ -1,16 +1,17 @@
 const express = require('express');
-const cors = require('cors');
-
-const logRoutes = require('./middleware/logger.js');
-const userRouter = require('./routers/user.js');
-const gameRouter = require('./controllers/game.js');
+const userRouter = require('./routers/userRouter');
+const gameRouter = require('./routers/gameRouter');
 
 const app = express();
-
 app.use(cors());
-app.use(express.json());
-app.use(logRoutes);
 
+app.use(express.json());
+
+// Routes (exactly as you requested)
+app.use('/user', userRouter); // user routes: /users/___
+app.use('/game', gameRouter); // game routes: game/_____
+
+// Optional: Basic homepage route
 app.get("/", (req, res) => {
   res.status(200).json({
     title: "Educational Quiz Game",
@@ -21,6 +22,6 @@ app.get("/", (req, res) => {
 app.use('/user', userRouter);
 app.use('/game', gameRouter);
 
-module.exports = app; 
+module.exports = app;
 
 
