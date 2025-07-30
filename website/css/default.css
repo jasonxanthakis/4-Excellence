@@ -11,27 +11,38 @@ body {
   min-height: 100vh;
 }
 
-nav, footer {
+nav {
   background-color: rgb(135, 236, 135);
   color: rgba(0, 0, 0, 0.69);
   padding: 1rem;
   font-size: larger;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
+footer {
+  background-color: rgb(135, 236, 135);
+  color: rgba(0, 0, 0, 0.69);
+  padding: 1rem;
+  font-size: larger;
+  text-align: center;
+}
+
+/* Main container */
 main {
   flex: 1;
   background-image: url(../assets/bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  /* background-color: lightskyblue;  */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
 }
 
+/* Login container */
 .login-container {
   background-color: rgb(255, 255, 255);
   padding: 2rem;
@@ -43,84 +54,87 @@ main {
   flex-direction: column;
 }
 
+/* Form elements */
 fieldset {
   display: flex;
   align-items: center;
   border: none;
 }
-input{
-    width: 100%;
-    padding: 10px;
+
+input {
+  width: 100%;
+  padding: 10px;
 }
 
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border-color: rgba(11, 11, 11, 0.556);
+}
 
+/* Role-select container */
 .role-select {
   display: flex;
   justify-content: space-between;
 }
 
-#studentlogin{
-    /* background-color: rgba(135, 236, 135, 0.822); */
-    margin: 10px;
-    padding:5px;
-    border-radius: 10px;
-    border-color: rgba(11, 11, 11, 0.556);
-}
-#teacherlogin{
-    /* background-color: rgba(135, 236, 135, 0.822); */
-    margin: 10px;
-    padding:5px;
-    border-radius: 10px;
-    border-color: rgba(11, 11, 11, 0.556);
+/* Specific buttons */
+#studentlogin,
+#teacherlogin {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border-color: rgba(11, 11, 11, 0.556);
 }
 
+/* Icons */
 .icon {
-    width :30px;
-    margin: 10px;
-} 
-
-/* media queries */
-@media (max-width: 600px) {
-  .login-container {
-    padding: 1.5rem;
-    max-width: 90%;
-  }
-
-  nav h1, footer p {
-    font-size: 1rem;
-  }
-
-  .login-container h2 {
-    font-size: 1.5rem;
-  }
+  width: 30px;
+  margin: 10px;
 }
 
-
-h2{
-    text-align: center;
-    font-size: 40px;
+/* Headings */
+h2 {
+  text-align: center;
+  font-size: 40px;
 }
 
+/* Containers */
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem;
 }
 
-.game-container{
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Quiz/Game UI components (from file 1) */
+.game-container {
   width: 70%;
   text-align: center;
 }
+
 .question-box {
   background-color: white;
   border: 2px solid #ccc;
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 10px;
-  text-align: centre;
+  text-align: center; /* corrected from 'centre' */
   font-size: 1.2rem;
   font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .answer-grid {
@@ -151,4 +165,21 @@ h2{
 
 .answer-box.wrong {
   background-color: #ffcdd2; /* light red */
+}
+
+/* Media queries */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  nav h1,
+  footer p {
+    font-size: 1rem;
+  }
+
+  .login-container h2 {
+    font-size: 1.5rem;
+  }
 }
