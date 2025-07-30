@@ -145,16 +145,21 @@ class User {
 
     static async deleteUser(username) {
         if (!username || typeof username !== 'string') {
+            console.log(username)
             throw new Error('Valid username is required');
         }
 
         try {
+            const cleanUsername = username.trim().replace(/\s+/g, '').toLowerCase();
+        
             const result = await db.query(
-                "DELETE FROM Users WHERE username = $1 RETURNING username, user_id, is_teacher",
-                [username]
+                `DELETE FROM Users 
+                 WHERE LOWER(REPLACE(username, '_', '')) = $1 
+                 RETURNING username, user_id, is_teacher`,
+                [cleanUsername]
             );
 
-            // Return null if no user found (consistent with other methods)
+            // Return null if no user found 
             if (result.rows.length === 0) {
                 return null;
             }
@@ -373,18 +378,17 @@ class Teacher extends User {
 
             // verify the teacher owns the class
             const ownershipCheck = await db.query(
-                `SELECT 1 FROM classes WHERE class_id = $1 AND teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $2)`,
+                `SELECT 1 FROM Classes WHERE class_id = $1 AND teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $2)`,
                 [classID, teacherID]
             );
     
             if (ownershipCheck.rows.length === 0) {
-                return { success: false, message: "Class not found or unauthorized" };
+                return { success: false, message: "Class not found or unauthorised" };
             }
     
             //Delete the class
             const result = await db.query(
-                `DELETE FROM classes WHERE class_id = $1 RETURNING class_id, class_name`,
-                [classID]
+                `DELETE FROM Classes WHERE class_id = $1 RETURNING class_id, class_name`, [classID]
             );
     
             return { 
@@ -393,7 +397,7 @@ class Teacher extends User {
             };
     
         } catch (error) {
-            console.error("Delete class error:", error);
+            console.error("error:", error);
             return { 
                 success: false, 
                 message: "Failed to delete class" 
@@ -450,11 +454,12 @@ class Teacher extends User {
     }
 
     static async updateClass(teacherId, classId, className) {
+        console.log('class name change: ', className)
         const { rows: [classData] } = await db.query(
-            `UPDATE classes SET class_name = $1 WHERE class_id = $2 AND teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $3) RETURNING class_id, class_name`, [className, classId, teacherId]
+            `UPDATE Classes SET class_name = $1 WHERE class_id = $2 AND teacher_id = (SELECT teacher_id FROM Teachers WHERE user_id = $3) RETURNING class_id, class_name`, [className, classId, teacherId]
         );
         if (!classData) {
-            throw new Error("Class not found or unauthorized");
+            throw new Error("Class not found or unauthorised");
         }
     
         return classData;
