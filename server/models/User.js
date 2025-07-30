@@ -101,6 +101,10 @@ class User {
                     "INSERT INTO Students (user_id) VALUES ($1) RETURNING *",
                     [newUser.user_id]
                 );
+                const gameStats = await db.query(
+                    "INSERT INTO Student_Stats (student_id, game_id) VALUES ($1, 1), ($2, 2) RETURNING *",
+                    [studentResult.rows[0].student_id, studentResult.rows[0].student_id]
+                );
                 return new Student({
                     ...newUser,
                     student_id: studentResult.rows[0].student_id
