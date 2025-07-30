@@ -8,7 +8,7 @@ userRouter.get('/student/:id/stats', userController.getUserStats); // /student/:
 userRouter.get('/:id', userController.getUserInfo);  
 userRouter.get('/:id/classes', userController.getClassByTeacher); //if is_teacher == false {return only names} else if is_teacher == true {return class objects}
 userRouter.get('/students/classes/:id', userController.getStudentsInClass); // pass a class id and get the students in the class returned
-userRouter.get('/:id/classes', userController.getClasses);  
+userRouter.get('/:id/classes', userController.getClasses);
 userRouter.get('/:teacherid/:id/classes', userController.getAllClasses);  // test
 
 
