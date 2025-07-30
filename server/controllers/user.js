@@ -181,7 +181,10 @@ async function updateClassDetails(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const classId = req.params.classId;
+        // console.log('teacher ID:', teacherId)
+        // console.log('class ID:', classId)
         const { className } = req.body;
+        console.log(className)
 
         const updatedClass = await Teacher.updateClass(teacherId, classId, className);
         res.status(200).json(updatedClass);

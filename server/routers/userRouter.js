@@ -21,7 +21,7 @@ userRouter.delete('/:username', userController.deleteUser);
 userRouter.delete('/:teacherid/classes/:class', userController.deleteClass);  // teachers can only delete classes they are part of user id and class_id have to match
 
 
-userRouter.patch('/:teacherid/classes/:class', userController.updateClassDetails);  
+userRouter.patch('/:teacherid/classes/:classId', userController.updateClassDetails);  
 
 
 

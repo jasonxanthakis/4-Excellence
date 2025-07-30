@@ -279,13 +279,13 @@ Expected Response:
 Requires - teacherID & ClassID
 
 Example HTTP Request: 
-PATCH localhost:3007/user/3/classes/5
+PATCH localhost:3007/user/4/classes/4
 Body: {
     "className": "changed"
 }
 
 Expected Response:
 {
-    "success": true,
-    "message": "Class deleted successfully"
+    "class_id": 4,
+    "class_name": "changed"
 }

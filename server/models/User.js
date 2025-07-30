@@ -455,15 +455,19 @@ class Teacher extends User {
 
     static async updateClass(teacherId, classId, className) {
         console.log('class name change: ', className)
+        console.log('teacher ID:', teacherId)
+        console.log('class ID:', classId)
         const { rows: [classData] } = await db.query(
             `UPDATE Classes SET class_name = $1 WHERE class_id = $2 AND teacher_id = (SELECT teacher_id FROM Teachers WHERE user_id = $3) RETURNING class_id, class_name`, [className, classId, teacherId]
         );
+        console.log('class data:', classData)
         if (!classData) {
             throw new Error("Class not found or unauthorised");
         }
     
         return classData;
     }
+    
 
 
 
