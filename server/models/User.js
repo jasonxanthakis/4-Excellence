@@ -135,7 +135,7 @@ class User {
             const user = result.rows[0];
             // Compare password
             const isMatch = await bcrypt.compare(password, user.password_hash);
-            return isMatch; // true if match, false otherwise
+            return {success: isMatch, username: user.username, user_id: user.user_id}; // true if match, false otherwise
         } catch (error) {
             // Log error if needed
             return false;

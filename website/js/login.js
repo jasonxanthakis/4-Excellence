@@ -21,6 +21,8 @@ document.getElementById("studentlogin").addEventListener("click", async () => {
         console.log(response);
 
         if (response.status == 200) {
+            localStorage.setItem("userID", result.userID);
+            localStorage.setItem("username", result.username);
             localStorage.setItem("token", result.token);
             window.location.assign("students.html");
         
@@ -53,6 +55,8 @@ document.getElementById("teacherlogin").addEventListener("click", async () => {
         const result = await response.json();
 
         if (response.status == 200) {
+            localStorage.setItem("userID", result.userID);
+            localStorage.setItem("username", result.username);
             localStorage.setItem("token", result.token);
             window.location.assign("teachers.html");
         
