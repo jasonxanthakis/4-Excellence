@@ -8,12 +8,9 @@ const userRouter = require('./routers/userRouter');
 const app = express();
 app.use(express.json());
 
-const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'X-Requested-With'],
-  credentials: false, // change to true if you want to allow cookies
-};
+// Routes 
+app.use('/user', userRouter); // user routes: /user/___
+app.use('/game', gameRouter); // game routes: game/_____
 
 app.use(cors(corsOptions));
 app.use(express.json());
