@@ -70,7 +70,7 @@ CREATE TABLE Classes(
   class_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   class_name VARCHAR(50) NOT NULL,
   teacher_id INT NOT NULL,
-  subject_id INT NOT NULL,
+  subject_id INT NOT NULL ,
   CONSTRAINT fk_class_teacher
     FOREIGN KEY (teacher_id)
     REFERENCES Teachers(teacher_id)

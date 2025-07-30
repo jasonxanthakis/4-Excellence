@@ -319,8 +319,15 @@ class Teacher extends User {
 
     }
 
-    static async getClasses(classID) {
+    static async getClasses(classID, teacherID) {
         try {
+            const isTeacher = await super.isTeacher(teacherID);
+
+            if (!isTeacher) {
+                console.log("Elevation of privileges attempt!");
+                return null;
+            }
+
             const result = await db.query(
                 "SELECT class_name FROM classes WHERE class_id = $1", [classID]
             );
@@ -333,8 +340,15 @@ class Teacher extends User {
 
     }
 
-    static async getAllClasses() {
+    static async getAllClasses(teacherID) {
         try {
+            const isTeacher = await super.isTeacher(teacherID);
+
+            if (!isTeacher) {
+                console.log("Elevation of privileges attempt!");
+                return null;
+            }
+
             const result = await db.query(
                 "SELECT class_name FROM classes "
             );
@@ -346,6 +360,106 @@ class Teacher extends User {
         }
 
     }
+
+    static async deleteClass(teacherID, classID) {
+        try {
+            const isTeacher = await super.isTeacher(teacherID);
+
+            if (!isTeacher) {
+                console.log("Elevation of privileges attempt!");
+                return null;
+            }
+
+
+            // verify the teacher owns the class
+            const ownershipCheck = await db.query(
+                `SELECT 1 FROM classes WHERE class_id = $1 AND teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $2)`,
+                [classID, teacherID]
+            );
+    
+            if (ownershipCheck.rows.length === 0) {
+                return { success: false, message: "Class not found or unauthorized" };
+            }
+    
+            //Delete the class
+            const result = await db.query(
+                `DELETE FROM classes WHERE class_id = $1 RETURNING class_id, class_name`,
+                [classID]
+            );
+    
+            return { 
+                success: true,
+                deletedClass: result.rows[0] 
+            };
+    
+        } catch (error) {
+            console.error("Delete class error:", error);
+            return { 
+                success: false, 
+                message: "Failed to delete class" 
+            };
+        }
+    }
+
+
+    // use a toggle list / or list subject options e.g. maths,english... and when user selects it the db queries for the associated subject id 
+    static async createClass(teacherId, className, subjectChoice) {
+        try {
+            // Verify teacher exists
+            const teacher = await db.query(
+                `SELECT teacher_id FROM teachers WHERE user_id = $1`, 
+                [teacherId]
+            );
+            
+            if (!teacher.rows.length) {
+                throw new Error("Teacher not found");
+            }
+
+            const classExists = await db.query(
+                `SELECT 1 FROM classes 
+                 WHERE class_name = $1 
+                 AND teacher_id = $2`,
+                [className.trim(), teacher.rows[0].teacher_id]
+            );
+            
+            if (classExists.rows.length) {
+                throw new Error(`Class "${className}" already exists for this teacher`);
+            }
+    
+            // Takes the subjectID and  
+            const subjectResult = await db.query(
+                `SELECT subject_id FROM subjects WHERE subject ILIKE $1 || '%' LIMIT 1`, [subjectChoice.trim()]
+                // not case sensitve due to ILIKE
+            );
+            if (!subjectResult.rows.length) {
+                throw new Error(`Subject "${subjectChoice}" not found`);
+            }
+            
+            const subjectId = subjectResult.rows[0].subject_id; // Extract the ID
+    
+            // Creates the class using the subjectId from the inputted subject name
+            const { rows: [newClass] } = await db.query(
+                `INSERT INTO classes (class_name, teacher_id, subject_id) VALUES ($1, $2, $3) RETURNING class_id, class_name, subject_id`, [className, teacher.rows[0].teacher_id, subjectId] // Use the extracted number
+            );
+            return newClass;
+    
+        } catch (error) {
+            console.error("Class creation failed:", error);
+            throw error;
+        }
+    }
+
+    static async updateClass(teacherId, classId, className) {
+        const { rows: [classData] } = await db.query(
+            `UPDATE classes SET class_name = $1 WHERE class_id = $2 AND teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $3) RETURNING class_id, class_name`, [className, classId, teacherId]
+        );
+        if (!classData) {
+            throw new Error("Class not found or unauthorized");
+        }
+    
+        return classData;
+    }
+
 
 
 }
