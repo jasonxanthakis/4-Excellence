@@ -30,5 +30,3 @@ app.use('/user', userRouter);
 //app.use('/game', gameRouter);
 
 module.exports = app;
-
-
