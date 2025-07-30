@@ -166,9 +166,11 @@ async function createClass(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const { className } = req.body;
+
         const { subject } = req.body;
         
         const newClass = await Teacher.createClass(teacherId, className, subject);
+      
         res.status(201).json(newClass);
 
     } catch (error) {
