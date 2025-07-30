@@ -21,7 +21,7 @@ async function getUserInfo(req,res){
 
 async function createUser(req, res) {
     try {
-        const { username, password, is_teacher, school_name } = req.body;
+        const { username, password, is_teacher, school_name='None' } = req.body;
         const user = await User.createUser({ username, password, is_teacher, school_name });
         res.status(200).json(user);
     } catch (error) {
@@ -166,9 +166,9 @@ async function createClass(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const { className } = req.body;
-        const { subjectChoice } = req.body;
+        const { subject } = req.body;
         
-        const newClass = await Teacher.createClass(teacherId, className, subjectChoice);
+        const newClass = await Teacher.createClass(teacherId, className, subject);
         res.status(201).json(newClass);
 
     } catch (error) {

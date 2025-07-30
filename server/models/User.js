@@ -55,7 +55,7 @@ class User {
     static async createUser(data) {
         // Sign Up function that takes in data and based on the is_teacher conditon, it additionally adds the user to the Teachers table or the Students table 
         // passoword hashing is done by bcrypt
-        const username = data.userName?.trim(); // Note: Using userName from data but query checks 'username'
+        const username = data.username?.trim(); // Note: Using userName from data but query checks 'username'
         const password = data.password?.trim();
         const is_teacher = Boolean(data.is_teacher);
         const school_name = data.school_name?.trim();
