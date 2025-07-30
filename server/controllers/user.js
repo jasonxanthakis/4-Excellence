@@ -1,4 +1,4 @@
-const { User, Student, Teacher } = require('../models/user');
+const { User, Student, Teacher } = require('../models/User.js');
 
 async function getUserStats(req, res) {
     try {
@@ -21,7 +21,7 @@ async function getUserInfo(req,res){
 
 async function createUser(req, res) {
     try {
-        const { username, password, is_teacher, school_name } = req.body;
+        const { username, password, is_teacher, school_name='None' } = req.body;
         const user = await User.createUser({ username, password, is_teacher, school_name });
         res.status(200).json(user);
     } catch (error) {
@@ -42,10 +42,9 @@ async function CheckUserExists(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        const teacherId = req.params.teacherid; // From URL
-        const { username } = req.params;
+        const username  = req.params.username;
         
-        const deletedUser = await User.deleteUser({ username, teacherId });
+        const deletedUser = await User.deleteUser(username);
         
         if (!deletedUser) {
             return res.status(404).json({ error: 'User not found' });
@@ -61,31 +60,31 @@ async function deleteUser(req, res) {
     }
 }
 
+
 async function deleteClass(req, res) {
     try {
-        const teacherId = req.params.teacherid; // From URL
-        const classId = req.params.class; // From URL
+        const teacherId = req.params.teacherid;
+        const classId = req.params.class;
 
-        const result = await Class.deleteClass(teacherId, classId);
-
-        if (!result.success) {
-            const statusCode = result.message.includes("Unauthorized") ? 403 : 
-                             result.message.includes("not found") ? 404 : 400;
-            return res.status(statusCode).json(result);
+    
+        if (!teacherId || !classId) {
+            return res.status(400).json({
+                success: false,
+                message: "Teacher ID and Class ID are required"
+            });
         }
 
+        const result = await Teacher.deleteClass(teacherId, classId);
+        console.log(result.deletedClass)
+        
         res.status(200).json({
             success: true,
             data: result.deletedClass,
             message: "Class deleted successfully"
+            
         });
-
     } catch (error) {
-        console.error("Delete class error:", error);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error"
-        });
+        res.status(500).json({ error: error.message });
     }
 }
 
@@ -166,9 +165,11 @@ async function createClass(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const { className } = req.body;
-        const { subjectChoice } = req.body;
+
+        const { subject } = req.body;
         
-        const newClass = await Teacher.createClass(teacherId, className, subjectChoice);
+        const newClass = await Teacher.createClass(teacherId, className, subject);
+      
         res.status(201).json(newClass);
 
     } catch (error) {
@@ -182,7 +183,7 @@ async function updateClassDetails(req, res) {
         const classId = req.params.classId;
         const { className } = req.body;
 
-        const updatedClass = await Class.updateClass(teacherId, classId, className);
+        const updatedClass = await Teacher.updateClass(teacherId, classId, className);
         res.status(200).json(updatedClass);
 
     } catch (error) {

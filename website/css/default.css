@@ -11,12 +11,23 @@ body {
   min-height: 100vh;
 }
 
-nav, footer {
+nav {
   background-color: rgb(135, 236, 135);
   color: rgba(0, 0, 0, 0.69);
-  text-align: center;
   padding: 1rem;
   font-size: larger;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+footer {
+  background-color: rgb(135, 236, 135);
+  color: rgba(0, 0, 0, 0.69);
+  padding: 1rem;
+  font-size: larger;
+  text-align: center;
 }
 
 main {
@@ -24,12 +35,12 @@ main {
   background-image: url(../assets/bg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  /* background-color: lightskyblue;  */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
 }
+
 
 .login-container {
   background-color: rgb(255, 255, 255);
@@ -42,71 +53,125 @@ main {
   flex-direction: column;
 }
 
+
 fieldset {
   display: flex;
   align-items: center;
   border: none;
 }
+
 input{
-    width: 100%;
-    padding: 10px;
+  width: 100%;
+  padding: 10px;
 }
 
+button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border-color: rgba(11, 11, 11, 0.556);
+}
 
 .role-select {
   display: flex;
   justify-content: space-between;
 }
 
-#studentlogin{
-    /* background-color: rgba(135, 236, 135, 0.822); */
-    margin: 10px;
-    padding:5px;
-    border-radius: 10px;
-    border-color: rgba(11, 11, 11, 0.556);
-}
-#teacherlogin{
-    /* background-color: rgba(135, 236, 135, 0.822); */
-    margin: 10px;
-    padding:5px;
-    border-radius: 10px;
-    border-color: rgba(11, 11, 11, 0.556);
+#studentlogin,
+#teacherlogin {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  border-color: rgba(11, 11, 11, 0.556);
 }
 
 .icon {
-    width :30px;
-    margin: 10px;
-} 
+  width: 30px;
+  margin: 10px;
+}
 
-/* media queries */
+h2 {
+  text-align: center;
+  font-size: 40px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.game-container {
+  width: 70%;
+  text-align: center;
+}
+
+.question-box {
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  text-align: center; 
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  gap: 1rem;
+  margin: 1rem auto;
+  max-width: 500px;
+}
+
+.answer-box {
+  background-color: white;
+  border: 2px solid #aaa;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.answer-box:hover {
+  background-color: #f5f5f5;
+}
+
+.answer-box.correct {
+  background-color: #c8e6c9; 
+}
+
+.answer-box.wrong {
+  background-color: #ffcdd2; 
+}
+
 @media (max-width: 600px) {
   .login-container {
     padding: 1.5rem;
     max-width: 90%;
   }
 
-  nav h1, footer p {
+  nav h1,
+  footer p {
     font-size: 1rem;
   }
 
   .login-container h2 {
     font-size: 1.5rem;
   }
-}
-
-
-h2{
-    text-align: center;
-    font-size: 40px;
-}
-
-
-/* h1,h2,h3 {
-    line-height: 1.2
-} */
-
-.container {
-    display: flex;
-    flex-direction: column;
-    padding: 0.2rem;
 }

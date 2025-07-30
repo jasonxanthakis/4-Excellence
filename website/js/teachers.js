@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000/'
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("add-class-form");
   const classList = document.getElementById("class-list");

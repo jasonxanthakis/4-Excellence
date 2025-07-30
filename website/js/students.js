@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000/'
+
 document.addEventListener('DOMContentLoaded', function () {
   const homeworkList = document.querySelector('.card-title:contains("My Homework")')?.nextElementSibling;
   if (!homeworkList) return;

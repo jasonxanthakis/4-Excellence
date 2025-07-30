@@ -1,55 +1,82 @@
-document.getElementById("login-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+const API_URL = 'http://localhost:3000/'
 
-    const form = new FormData(e.target);
+document.getElementById("studentlogin").addEventListener("click", async () => {
+    const is_teacher = false;
 
+    const username = document.getElementById("userid").value;
+    const password = document.getElementById("password").value;
+
+    const data = {
+        username: username,
+        password: password,
+        is_teacher: is_teacher
+    }
+
+    if (username.length > 0 && password.length > 0) {
+        console.log(data);
+        let url = API_URL + '/user/login';
+        // const response = await sendPostRequest(url, data);
+        // const result = await response.json();
+
+        /*
+        if (response.status == 200) {
+            localStorage.setItem("token", data.token);
+            window.location.assign("students.html");
+        
+        } else {
+            alert(data.error);
+        }
+        */
+    };
+
+    document.getElementById("userid").value = '';
+    document.getElementById("password").value = '';
+})
+
+document.getElementById("teacherlogin").addEventListener("click", async () => {
+    const is_teacher = true;
+
+    const username = document.getElementById("userid").value;
+    const password = document.getElementById("password").value;
+
+    const data = {
+        username: username,
+        password: password,
+        is_teacher: is_teacher
+    }
+
+    if (username.length > 0 && password.length > 0) {
+        console.log(data);
+        let url = API_URL + '/user/login';
+        // const response = await sendPostRequest(url, data);
+        // const result = await response.json();
+
+        /*
+        if (response.status == 200) {
+            localStorage.setItem("token", data.token);
+            window.location.assign("teachers.html");
+        
+        } else {
+            alert(data.error);
+        }
+        */
+    };
+
+    document.getElementById("userid").value = '';
+    document.getElementById("password").value = '';
+})
+
+async function sendPostRequest(url, data) {
     const options = {
         method: "POST",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            username: form.get("username"),
-            password: form.get("password")
-        })
+        body: JSON.stringify(data)
     }
 
-    const response = await fetch("http://localhost:3000/login", options);
-    const data = await response.json();
+    const resp = await fetch(url, options);
+    const respBody = await resp.json();
 
-    if (response.status == 200) {
-        localStorage.setItem("token", data.token);
-        window.location.assign("students.html");
-      } else {
-        alert(data.error);
-      }
-})
-
-document.getElementById("login-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const form = new FormData(e.target);
-
-    const options = {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: form.get("username"),
-            password: form.get("password")
-        })
-    }
-
-    const response = await fetch("http://localhost:3000/login", options);
-    const data = await response.json();
-
-    if (response.status == 200) {
-        localStorage.setItem("token", data.token);
-        window.location.assign("teachers.html");
-      } else {
-        alert(data.error);
-      }
-})
+    return respBody;
+};
