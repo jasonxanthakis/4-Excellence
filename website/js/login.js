@@ -12,13 +12,10 @@ document.getElementById("studentlogin").addEventListener("click", async () => {
     }
 
     if (username.length > 0 && password.length > 0) {
-        console.log(data);
         let url = API_URL + '/user/login';
 
         const response = await sendPostRequest(url, data);
         const result = await response.json();
-
-        console.log(response);
 
         if (response.status == 200) {
             localStorage.setItem("userID", result.userID);
@@ -49,8 +46,8 @@ document.getElementById("teacherlogin").addEventListener("click", async () => {
     }
 
     if (username.length > 0 && password.length > 0) {
-        console.log(data);
         let url = API_URL + '/user/login';
+        
         const response = await sendPostRequest(url, data);
         const result = await response.json();
 
