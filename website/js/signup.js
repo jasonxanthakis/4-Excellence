@@ -1,26 +1,47 @@
-document.getElementById("register-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+const API_URL = 'http://localhost:3000/'
 
-    const form = new FormData(e.target);
+document.getElementById("signup").addEventListener("click", async () => {
+    const is_teacher = false;
 
+    const username = document.getElementById("userid").value;
+    const password = document.getElementById("password").value;
+    
+    const data = {
+        username: username,
+        password: password,
+        is_teacher: is_teacher
+    }
+
+    if (username.length > 0 && password.length > 0) {
+        console.log(data);
+        let url = API_URL + '/user/signup';
+        // const response = await sendPostRequest(url, data);
+        // const result = await response.json();
+
+        /*
+        if (response.status == 201) {
+            window.location.assign("login.html");
+        } else {
+            alert(data.error);
+        }
+        */
+    };
+
+    document.getElementById("userid").value = '';
+    document.getElementById("password").value = '';
+})
+
+async function sendPostRequest(url, data) {
     const options = {
         method: "POST",
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            username: form.get("username"),
-            password: form.get("password")
-        })
+        body: JSON.stringify(data)
     }
 
-    const response = await fetch("http://localhost:3000/signup", options);
-    const data = await response.json();
+    const resp = await fetch(url, options);
+    const respBody = await resp.json();
 
-    if (response.status == 201) {
-        window.location.assign("login.html");
-    } else {
-        alert(data.error);
-    }
-})
+    return respBody;
+};
