@@ -1,0 +1,62 @@
+[
+    {
+        "question": "What is the name of the tapestry that tells the story of the Norman Conquest?",
+        "options": [
+            "Bayeux Tapestry",
+            "Doomsday Book",
+            "Canterbury Tales",
+            "Wessex Chronicle"
+        ],
+        "answer": "Bayeux Tapestry",
+        "topic": "History",
+        "subcategory": "Normans",
+        "type": "multiple-choice",
+        "difficulty": "medium",
+        "subject": "History"
+    },
+    {
+        "question": "Who was Queen Elizabeth's Prime Minister of Britain during most of WWII?",
+        "options": [
+            "Winston Churchill",
+            "Neville Chamberlain",
+            "Clement Attlee",
+            "Anthony Eden"
+        ],
+        "answer": "Winston Churchill",
+        "topic": "History",
+        "subcategory": "World War II",
+        "type": "multiple-choice",
+        "difficulty": "easy",
+        "subject": "History"
+    },
+    {
+        "question": "Who was the daughter of Henry VIII and Anne Boleyn?",
+        "options": [
+            "Elizabeth I",
+            "Mary I",
+            "Anne of Cleves",
+            "Catherine of Aragon"
+        ],
+        "answer": "Elizabeth I",
+        "topic": "History",
+        "subcategory": "Tudors",
+        "type": "multiple-choice",
+        "difficulty": "easy",
+        "subject": "History"
+    },
+    {
+        "question": "Who was the Prime Minister of Britain during most of WWII?",
+        "options": [
+            "Winston Churchill",
+            "Neville Chamberlain",
+            "Clement Attlee",
+            "Anthony Eden"
+        ],
+        "answer": "Winston Churchill",
+        "topic": "History",
+        "subcategory": "World War II",
+        "type": "multiple-choice",
+        "difficulty": "medium",
+        "subject": "History"
+    }
+]

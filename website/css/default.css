@@ -11,21 +11,12 @@ body {
   min-height: 100vh;
 }
 
-nav {
+nav, footer {
   background-color: rgb(135, 236, 135);
   color: rgba(0, 0, 0, 0.69);
-  padding: 1rem;
-  font-size: larger;
-  display: flex;
-  align-items: center;
-}
-
-footer {
-  background-color: rgb(135, 236, 135);
-  color: rgba(0, 0, 0, 0.69);
-  padding: 1rem;
-  font-size: larger;
   text-align: center;
+  padding: 1rem;
+  font-size: larger;
 }
 
 main {
@@ -104,11 +95,10 @@ input{
 }
 
 
-h2 {
+h2{
     text-align: center;
     font-size: 40px;
 }
-
 
 
 /* h1,h2,h3 {
@@ -119,17 +109,4 @@ h2 {
     display: flex;
     flex-direction: column;
     padding: 0.2rem;
-}
-
-.card {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
 }
