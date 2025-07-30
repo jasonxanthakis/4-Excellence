@@ -1,5 +1,7 @@
 # API Endpoints
 
+
+## Users 
 ## GET Student Stats
 `userRouter.get('/student/:id/stats', userController.getUserStats); `
 ### Example Json
@@ -289,3 +291,137 @@ Expected Response:
     "success": true,
     "message": "Class deleted successfully"
 }
+
+# GAME
+
+### End Game
+`gameRouter.post('/:gameID/ended', gameController.endGame);`
+Requires - Game id 
+
+Example HTTP Request: 
+POST localhost:3007/game/1/ended
+Body: {
+    "studentId": 5,
+    "finalScore": 85,
+    "questionsAnswered": 10,
+     "correctAnswers": 8
+}
+
+Expected Response:
+{
+    "gameId": 1,
+    "studentId": 5,
+    "finalScore": 85,
+    "questionsAnswered": 10,
+    "correctAnswers": 8,
+    "accuracy": 80,
+    "stats": {
+        "timesPlayed": 3,
+        "averageScore": 85,
+        "bestScore": 85,
+        "lastScore": 85
+    }
+}
+
+### Get Random questions (No params required)
+will return 10 random questions regardless of their subject/ type
+`gameRouter.get('/qs', gameController.getVeryRandomQuestions);`
+Requires - N/A
+
+Example HTTP Request: 
+GET localhost:3007/game/qs
+Body: {
+}
+
+Expected Response: 10 randomised questions
+[
+    {
+        "id": 2,
+        "question": "What is 15 + 27?",
+        "answer": "42",
+        "options": [
+            "42",
+            "41",
+            "43",
+            "44"
+        ],
+        "difficulty": "Easy",
+        "topic": "Arithmetic"
+    },
+    {
+        "id": 1,
+        "question": "What is the capital of France?",
+        "answer": "Paris",
+        "options": [
+            "Paris",
+            "London",
+            "Berlin",
+            "Madrid"
+        ],
+        "difficulty": "Easy",
+        "topic": "European Capitals"
+    },
+    {
+        "id": 3,
+        "question": "What is the chemical symbol for water?",
+        "answer": "H2O",
+        "options": [
+            "H2O",
+            "CO2",
+            "NaCl",
+            "O2"
+        ],
+        "difficulty": "Easy",
+        "topic": "Chemistry"
+    }
+]
+
+### Get Random questions specifying type of question and subject
+`gameRouter.get('/qs/:type/:subject', gameController.getRandomQuestions);` 
+Requires - N/A
+
+Example HTTP Request: 
+GET localhost:3007/game/qs/multiplechoice/Mathematics
+Body: {
+}
+
+Expected Response: 10 randomised questions
+[
+    {
+        "id": 1,
+        "question": "What is the capital of France?",
+        "answer": "Paris",
+        "options": [
+            "Paris",
+            "London",
+            "Berlin",
+            "Madrid"
+        ],
+        "difficulty": "Easy",
+        "topic": "European Capitals"
+    },
+    {
+        "id": 2,
+        "question": "What is 15 + 27?",
+        "answer": "42",
+        "options": [
+            "42",
+            "41",
+            "43",
+            "44"
+        ],
+        "difficulty": "Easy",
+        "topic": "Arithmetic"
+    }
+]
+
+### Start Game
+`gameRouter.post('/:gameID', gameController.startGame);`
+Requires - N/A
+
+Example HTTP Request: 
+POST localhost:3007/game/
+Body: {
+}
+
+Expected Response: 

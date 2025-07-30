@@ -1,11 +1,12 @@
 // routers/gameRouter.js
 const express = require('express');
 const gameRouter = express.Router();
-const gameController = require("../controllers/user");
+const gameController = require("../controllers/game");
 
 // Game Routers
-// gameRouter.get('/', gameController.getRandomQuestions);  // get 10 random questions
+gameRouter.post('/:gameID/ended', gameController.endGame); 
+gameRouter.get('/qs', gameController.getVeryRandomQuestions); // Get 10 Random Questions - random subject and random type of quesiton
+gameRouter.get('/qs/:type/:subject', gameController.getRandomQuestions); // Get 10 Random questions from a specific subject and specific type
 // gameRouter.post('/:gameID', gameController.startGame);   // reponse should include game details, and in the case of quizzes a selection of 10 random questions
-// gameRouter.post('/:gameID/ended', gameController.endGame);   // req body should include score
 
 module.exports = gameRouter;

@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // Routes 
-app.use('/user', userRouter); // user routes: /users/___
+app.use('/user', userRouter); // user routes: /user/___
 app.use('/game', gameRouter); // game routes: game/_____
 
 
