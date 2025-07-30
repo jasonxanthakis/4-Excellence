@@ -27,8 +27,4 @@ async function setUpAll(baseDir = __dirname) {
     db.end();
 };
 
-if (require.main === module) {
-  setUpAll();
-}
-
 module.exports = setUpAll;
