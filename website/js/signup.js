@@ -19,8 +19,10 @@ document.getElementById("signup").addEventListener("click", async () => {
         // const result = await response.json();
 
         /*
-        if (response.status == 201) {
-            window.location.assign("login.html");
+        if (response.status == 200) {
+            localStorage.setItem("token", data.token);
+            window.location.assign("students.html");
+        
         } else {
             alert(data.error);
         }
