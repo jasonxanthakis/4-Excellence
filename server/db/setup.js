@@ -2,20 +2,20 @@ const fs = require('fs');
 const path = require('path');
 require("dotenv").config(); 
 
-const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
-
 const db = require("./connect.js");
 const questions = require("./dump-questions.js")
 
-const quizzes = ['ks3_history_questions.json', 'ks3_geography_questions.json'];
+async function setUpAll(baseDir = __dirname) {
+    const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
 
-async function setUpAll() {
+    const quizzes = ['ks3_history_questions.json', 'ks3_geography_questions.json'];
+
     await db.query(sql)
         .then(data => console.log("Set-up complete."))
         .catch(error => console.log(error));
 
     for (let i in quizzes) {
-        let filepath = path.join(__dirname, '..', '..', 'server', 'db', 'questions', quizzes[i]);
+        let filepath = path.join(baseDir, '..', '..', 'server', 'db', 'questions', quizzes[i]);
 
         await db.query(questions(filepath))
             .then(data => {
@@ -27,4 +27,8 @@ async function setUpAll() {
     db.end();
 };
 
-setUpAll();
+if (require.main === module) {
+  setUpAll();
+}
+
+module.exports = setUpAll;
