@@ -108,21 +108,19 @@ class User {
     }
 
     static async deleteUser(username) {
-        // Validate input
         if (!username || typeof username !== 'string') {
             throw new Error('Valid username is required');
         }
     
         try {
-            // Execute deletion query
             const result = await db.query(
                 "DELETE FROM Users WHERE username = $1 RETURNING username, user_id", 
                 [username]
             );
     
-            // Check if user was actually deleted
+            
             if (result.rows.length === 0) {
-                console.warn(`No user found with username: ${username}`);
+                console.log(`No user found with username: ${username}`);
                 return null;
             }
     
@@ -131,12 +129,6 @@ class User {
             return deletedUser.username;
     
         } catch (error) {
-            console.error(`Error deleting user ${username}:`, error);
-            
-            // Handle specific database errors
-            if (error.code === '23503') { // Foreign key violation
-                throw new Error('Cannot delete user - user has associated records');
-            }
             
             throw new Error(`User deletion failed: ${error.message}`);
         }
@@ -177,23 +169,7 @@ class Student extends User {
         }
     }
 
-    async getClasses() {
-        try {
-            const result = await db.query(`
-                SELECT c.*, s.subject, t.school_name, u.username as teacher_name
-                FROM Classes c
-                JOIN Students_To_Classes stc ON c.class_id = stc.class_id
-                JOIN Subjects s ON c.subject_id = s.subject_id
-                JOIN Teachers t ON c.teacher_id = t.teacher_id
-                JOIN Users u ON t.user_id = u.user_id
-                WHERE stc.student_id = $1
-            `, [this.student_id]);
-
-            return result.rows;
-        } catch (error) {
-            throw new Error('Failed to get student classes: ' + error.message);
-        }
-    }
+    // 
 
    
 }
