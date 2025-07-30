@@ -14,9 +14,10 @@ body {
 nav, footer {
   background-color: rgb(135, 236, 135);
   color: rgba(0, 0, 0, 0.69);
-  text-align: center;
   padding: 1rem;
   font-size: larger;
+  display: flex;
+  align-items: center;
 }
 
 main {
@@ -100,13 +101,54 @@ h2{
     font-size: 40px;
 }
 
-
-/* h1,h2,h3 {
-    line-height: 1.2
-} */
-
 .container {
     display: flex;
     flex-direction: column;
     padding: 0.2rem;
+}
+
+.game-container{
+  width: 70%;
+  text-align: center;
+}
+.question-box {
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  text-align: centre;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  gap: 1rem;
+  margin: 1rem auto;
+  max-width: 500px;
+}
+
+.answer-box {
+  background-color: white;
+  border: 2px solid #aaa;
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.answer-box:hover {
+  background-color: #f5f5f5;
+}
+
+.answer-box.correct {
+  background-color: #c8e6c9; /* light green */
+}
+
+.answer-box.wrong {
+  background-color: #ffcdd2; /* light red */
 }
