@@ -1,6 +1,5 @@
-const API_URL = 'http://localhost:3000/'
-
 document.getElementById("studentlogin").addEventListener("click", async () => {
+    const API_URL = 'http://localhost:3000';
     const is_teacher = false;
 
     const username = document.getElementById("userid").value;
@@ -15,18 +14,19 @@ document.getElementById("studentlogin").addEventListener("click", async () => {
     if (username.length > 0 && password.length > 0) {
         console.log(data);
         let url = API_URL + '/user/login';
-        // const response = await sendPostRequest(url, data);
-        // const result = await response.json();
 
-        /*
+        const response = await sendPostRequest(url, data);
+        const result = await response.json();
+
+        console.log(response);
+
         if (response.status == 200) {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", result.token);
             window.location.assign("students.html");
         
         } else {
-            alert(data.error);
+            alert(result.error);
         }
-        */
     };
 
     document.getElementById("userid").value = '';
@@ -34,6 +34,7 @@ document.getElementById("studentlogin").addEventListener("click", async () => {
 })
 
 document.getElementById("teacherlogin").addEventListener("click", async () => {
+    const API_URL = 'http://localhost:3000';
     const is_teacher = true;
 
     const username = document.getElementById("userid").value;
@@ -48,18 +49,16 @@ document.getElementById("teacherlogin").addEventListener("click", async () => {
     if (username.length > 0 && password.length > 0) {
         console.log(data);
         let url = API_URL + '/user/login';
-        // const response = await sendPostRequest(url, data);
-        // const result = await response.json();
+        const response = await sendPostRequest(url, data);
+        const result = await response.json();
 
-        /*
         if (response.status == 200) {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", result.token);
             window.location.assign("teachers.html");
         
         } else {
-            alert(data.error);
+            alert(result.error);
         }
-        */
     };
 
     document.getElementById("userid").value = '';
@@ -76,7 +75,6 @@ async function sendPostRequest(url, data) {
     }
 
     const resp = await fetch(url, options);
-    const respBody = await resp.json();
 
-    return respBody;
+    return resp;
 };

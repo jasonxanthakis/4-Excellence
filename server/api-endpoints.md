@@ -73,6 +73,7 @@ Example HTTP Request: GET localhost:3007/user/3/classes Body: { }
 
 Expected Response: [ { "class_name": "Algebra I" }, { "class_name": "Biology Basics" }, { "class_name": "Creative Writing" }, { "class_name": "European History" }, { "class_name": "Geometry" }, { "class_name": "Physical Science" } ]
 
+
 userRouter.post('/signup', userController.createUser);
 
 Example Json
