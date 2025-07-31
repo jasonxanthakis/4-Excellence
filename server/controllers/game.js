@@ -36,8 +36,8 @@ async function endGame(req, res) {
 async function startGame(req, res) {
     try {
         const gameId  = req.params.gameId;
-        const { studentId, subjectName } = req.body; 
-        const result = await Game.startGame(gameId , studentId, subjectName);
+        const { studentId } = req.body; 
+        const result = await Game.startGame(gameId , studentId);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
