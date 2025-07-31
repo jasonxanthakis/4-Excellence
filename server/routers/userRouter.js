@@ -6,8 +6,8 @@ const authenticator = require('../middleware/authenticator');
 
 //User Routers
 userRouter.get('/student/:id/stats', authenticator, userController.getUserStats); // /student/:id/stats change to this for specificity
-userRouter.get('/:id', authenticator, userController.getUserInfo);  
-userRouter.get('/:id/classes', userController.getClassByTeacher); //if is_teacher == false {return only names} else if is_teacher == true {return class objects}
+userRouter.get('/:id', userController.getUserInfo);  
+userRouter.get('/:id/classes', authenticator, userController.getClassByTeacher); //if is_teacher == false {return only names} else if is_teacher == true {return class objects}
 userRouter.get('/students/classes/:id', userController.getStudentsInClass); // pass a class id and get the students in the class returned
 userRouter.get('/:teacherid/:id/classes', userController.getClasses);  
 userRouter.get('/:teacherid/allclasses', userController.getAllClasses);
@@ -15,7 +15,7 @@ userRouter.get('/:teacherid/allclasses', userController.getAllClasses);
 
 userRouter.post('/signup', userController.createUser);
 userRouter.post('/login', userController.CheckUserExists);
-userRouter.post('/:teacherid/classes', userController.createClass); 
+userRouter.post('/:teacherid/classes', authenticator, userController.createClass); 
 
 
 userRouter.delete('/:username', userController.deleteUser); 
