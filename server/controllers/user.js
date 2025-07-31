@@ -50,8 +50,8 @@ async function createUser(req, res) {
 async function CheckUserExists(req, res) {
     try {
 
-        const { username, password } = req.body;
-        const user = await User.CheckUserExists({ username, password });
+        const { username, password, is_teacher } = req.body;
+        const user = await User.CheckUserExists(username, password, is_teacher);
 
         if (user.success) {
             const payload = {username: user.username};

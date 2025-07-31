@@ -158,7 +158,8 @@ async function sendPostRequest(url, data) {
     const options = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+          "Authorization": localStorage.getItem("token"),
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
     }

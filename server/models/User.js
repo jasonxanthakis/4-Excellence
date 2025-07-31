@@ -126,10 +126,9 @@ class User {
         }
     }
 
-    static async CheckUserExists(data) {
+    static async CheckUserExists(username, password, is_teacher) {
         // "isMatch" variable identifies if login was successful based on boolean output: (TRUE = successful) & (False = unsuccessful) 
         try {
-            const { username, password } = data;
             // Find user by username
             const result = await db.query("SELECT * FROM Users WHERE username = $1", [username]);
             if (result.rows.length === 0) {
@@ -137,6 +136,12 @@ class User {
                 return false;
             }
             const user = result.rows[0];
+
+            // Authorisation Check
+            if (user.is_teacher != is_teacher) {
+                throw new Error('Failed to pass authorisation check');
+            }
+
             // Compare password
             const isMatch = await bcrypt.compare(password, user.password_hash);
             return {success: isMatch, username: user.username, user_id: user.user_id}; // true if match, false otherwise
@@ -305,19 +310,17 @@ class Teacher extends User {
     }
 
 
-    static async getClassByTeacher(teacherID) {
+    static async getClassByTeacher(userID) {
         try {
-            const isTeacher = await super.isTeacher(teacherID);
+            const isTeacher = await super.isTeacher(userID);
 
             if (!isTeacher) {
-                console.log("Elevation of privileges attempt!");
-                return null;
+                throw new Error("Elevation of privileges attempt!");
             }
 
             const result = await db.query(
                 "SELECT class_name FROM classes WHERE teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $1)",
-                [teacherID]
-                
+                [userID]
             );
 
             return result.rows.length > 0 ? result.rows : "No Results";
@@ -410,12 +413,12 @@ class Teacher extends User {
 
 
     // use a toggle list / or list subject options e.g. maths,english... and when user selects it the db queries for the associated subject id 
-    static async createClass(teacherId, className, subjectChoice) {
+    static async createClass(userID, className, subjectChoice) {
         try {
             // Verify teacher exists
             const teacher = await db.query(
                 `SELECT teacher_id FROM teachers WHERE user_id = $1`, 
-                [teacherId]
+                [userID]
             );
             
             if (!teacher.rows.length) {
