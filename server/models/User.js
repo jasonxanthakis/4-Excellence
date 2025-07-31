@@ -276,7 +276,7 @@ class Student extends User {
 
         try {
             const result = await db.query(
-                "SELECT * FROM Student_Stats WHERE student_id = $1",
+                "SELECT * FROM Student_Stats WHERE student_id = (SELECT student_id FROM students WHERE user_id = $1)",
                 [student_id]
             );
 
