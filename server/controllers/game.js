@@ -37,5 +37,4 @@ module.exports = {
     getRandomQuestions,
     getVeryRandomQuestions,
     endGame
-
 }

@@ -101,6 +101,10 @@ class User {
                     "INSERT INTO Students (user_id) VALUES ($1) RETURNING *",
                     [newUser.user_id]
                 );
+                const gameStats = await db.query(
+                    "INSERT INTO Student_Stats (student_id, game_id) VALUES ($1, 1), ($2, 2) RETURNING *",
+                    [studentResult.rows[0].student_id, studentResult.rows[0].student_id]
+                );
                 return new Student({
                     ...newUser,
                     student_id: studentResult.rows[0].student_id
@@ -135,7 +139,7 @@ class User {
             const user = result.rows[0];
             // Compare password
             const isMatch = await bcrypt.compare(password, user.password_hash);
-            return isMatch; // true if match, false otherwise
+            return {success: isMatch, username: user.username, user_id: user.user_id}; // true if match, false otherwise
         } catch (error) {
             // Log error if needed
             return false;
