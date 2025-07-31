@@ -3,7 +3,7 @@ const cors = require('cors');
 
 const logRoutes = require('./middleware/logger.js');
 const userRouter = require('./routers/userRouter');
-//const gameRouter = require('./routers/gameRouter');
+const gameRouter = require('./routers/gameRouter');
 
 const app = express();
 app.use(express.json());
@@ -27,6 +27,6 @@ app.get("/", (req, res) => {
 })
 
 app.use('/user', userRouter);
-//app.use('/game', gameRouter);
+app.use('/game', gameRouter);
 
 module.exports = app;
