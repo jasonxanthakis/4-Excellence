@@ -315,11 +315,10 @@ class Teacher extends User {
             }
 
             const result = await db.query(
-                "SELECT class_name FROM classes WHERE teacher_id = $1",
+                "SELECT class_name FROM classes WHERE teacher_id = (SELECT teacher_id FROM teachers WHERE user_id = $1)",
                 [teacherID]
                 
             );
-            console.log(result.rows)
 
             return result.rows.length > 0 ? result.rows : "No Results";
         } catch (error) {
@@ -427,7 +426,7 @@ class Teacher extends User {
                 `SELECT 1 FROM classes 
                  WHERE class_name = $1 
                  AND teacher_id = $2`,
-                [className.trim(), teacher.rows[0].teacher_id]
+                [className, teacher.rows[0].teacher_id]
             );
             
             if (classExists.rows.length) {
@@ -436,7 +435,7 @@ class Teacher extends User {
     
             // Takes the subjectID and  
             const subjectResult = await db.query(
-                `SELECT subject_id FROM subjects WHERE subject ILIKE $1 || '%' LIMIT 1`, [subjectChoice.trim()]
+                `SELECT subject_id FROM subjects WHERE subject LIKE $1 || '%' LIMIT 1`, [subjectChoice.trim()]
                 // not case sensitve due to ILIKE
             );
             if (!subjectResult.rows.length) {
@@ -444,7 +443,7 @@ class Teacher extends User {
             }
             
             const subjectId = subjectResult.rows[0].subject_id; // Extract the ID
-    
+
             // Creates the class using the subjectId from the inputted subject name
             const { rows: [newClass] } = await db.query(
                 `INSERT INTO classes (class_name, teacher_id, subject_id) VALUES ($1, $2, $3) RETURNING class_id, class_name, subject_id`, [className, teacher.rows[0].teacher_id, subjectId] // Use the extracted number

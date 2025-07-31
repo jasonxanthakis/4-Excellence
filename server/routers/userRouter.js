@@ -13,7 +13,7 @@ userRouter.get('/:teacherid/allclasses', userController.getAllClasses);  // requ
 
 userRouter.post('/signup', userController.createUser);
 userRouter.post('/login', userController.CheckUserExists);
-userRouter.post('/:teacherid/classes', userController.createClass); 
+userRouter.post('/:teacherid/classes', authenticator, userController.createClass); 
 
 
 userRouter.delete('/:username', userController.deleteUser); 
