@@ -133,7 +133,7 @@ async function selectAnswer(button) {
     userAnswers.push(false);
   }
 
-  await sleep(2000);  // wait for 2 seconds
+  await sleep(1000);  // wait for 1 second
 
   if (userAnswers.length < 10) {
     setUpQuestion();
