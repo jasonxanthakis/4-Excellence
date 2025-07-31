@@ -1,5 +1,5 @@
 document.getElementById("signup").addEventListener("click", async () => {
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://four-excellence.onrender.com';
     const is_teacher = false;
 
     const username = document.getElementById("userid").value;

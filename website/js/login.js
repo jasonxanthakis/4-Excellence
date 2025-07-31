@@ -1,5 +1,5 @@
 document.getElementById("studentlogin").addEventListener("click", async () => {
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://four-excellence.onrender.com';
     const is_teacher = false;
 
     const username = document.getElementById("userid").value;
@@ -33,7 +33,7 @@ document.getElementById("studentlogin").addEventListener("click", async () => {
 })
 
 document.getElementById("teacherlogin").addEventListener("click", async () => {
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://four-excellence.onrender.com';
     const is_teacher = true;
 
     const username = document.getElementById("userid").value;

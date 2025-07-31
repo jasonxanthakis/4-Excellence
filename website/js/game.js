@@ -34,7 +34,7 @@ document.getElementById('logoutbtn').addEventListener('click', async () => {
 async function getQuestions() {
   questionList = [];
 
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://four-excellence.onrender.com';
 
   const params = new URLSearchParams(window.location.search);
   const game = params.get('game');
@@ -50,7 +50,7 @@ async function getQuestions() {
 };
 
 async function endGame(data) {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://four-excellence.onrender.com';
 
   const params = new URLSearchParams(window.location.search);
   const game = params.get('game');

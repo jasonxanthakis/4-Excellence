@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/'
+
 
 document.getElementById('homebtn').addEventListener('click', async () => {
   window.location.assign("teachers.html");
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'https://four-excellence.onrender.com';
 
     let url = API_URL + `/user/${localStorage.getItem("userID")}/classes`;
 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function getAllClasses() {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://four-excellence.onrender.com';
 
   let url = API_URL + `/user/${localStorage.getItem("userID")}/classes`;
 

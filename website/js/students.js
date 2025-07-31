@@ -18,7 +18,7 @@ document.getElementById('histquiz').addEventListener('click', () => {
 });
 
 async function getUserDetails() {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://four-excellence.onrender.com';
 
   let url = API_URL + `/user/student/${localStorage.getItem("userID")}/stats`;
 
