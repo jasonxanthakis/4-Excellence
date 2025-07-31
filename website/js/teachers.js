@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const response = await sendPostRequest(url, data);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const newClass = document.getElementById("new-class").value.trim();
       if (newClass !== "") {
         const li = document.createElement("li");
