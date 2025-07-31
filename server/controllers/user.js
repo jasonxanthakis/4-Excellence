@@ -1,4 +1,7 @@
-const { User, Student, Teacher } = require('../models/user');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const { User, Student, Teacher } = require('../models/User.js');
 
 async function getUserStats(req, res) {
     try {
@@ -21,9 +24,24 @@ async function getUserInfo(req,res){
 
 async function createUser(req, res) {
     try {
-        const { username, password, is_teacher, school_name } = req.body;
+        const { username, password, is_teacher, school_name='None' } = req.body;
         const user = await User.createUser({ username, password, is_teacher, school_name });
-        res.status(200).json(user);
+
+        const payload = {username: user.username};
+        
+        const sendToken = (err, token) => {
+            if (err) {
+                throw new Error('Error in token generation');
+            }
+            res.status(200).json({
+                success: true,
+                userID: user.user_id,
+                username: user.username,
+                token: token
+            });
+        };
+
+        jwt.sign(payload, process.env.SECRET_TOKEN, {expiresIn: 3600}, sendToken);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -34,7 +52,26 @@ async function CheckUserExists(req, res) {
 
         const { username, password } = req.body;
         const user = await User.CheckUserExists({ username, password });
-        res.status(200).json(user);
+
+        if (user.success) {
+            const payload = {username: user.username};
+
+            const sendToken = (err, token) => {
+                if (err) {
+                    throw new Error('Error in token generation');
+                }
+                res.status(200).json({
+                    success: true,
+                    userID: user.user_id,
+                    username: user.username,
+                    token: token
+                });
+            };
+
+            jwt.sign(payload, process.env.SECRET_TOKEN, {expiresIn: 3600}, sendToken);
+        } else {
+            throw new Error('User could not be authenticated');
+        }
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -165,9 +202,11 @@ async function createClass(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const { className } = req.body;
-        const { subjectChoice } = req.body;
+
+        const { subject } = req.body;
         
-        const newClass = await Teacher.createClass(teacherId, className, subjectChoice);
+        const newClass = await Teacher.createClass(teacherId, className, subject);
+      
         res.status(201).json(newClass);
 
     } catch (error) {
@@ -179,7 +218,10 @@ async function updateClassDetails(req, res) {
     try {
         const teacherId = req.params.teacherid;
         const classId = req.params.classId;
+        // console.log('teacher ID:', teacherId)
+        // console.log('class ID:', classId)
         const { className } = req.body;
+        console.log(className)
 
         const updatedClass = await Teacher.updateClass(teacherId, classId, className);
         res.status(200).json(updatedClass);

@@ -1,4 +1,4 @@
-# API Endpoints
+# 4-Excellence Back-End Server & Database
 
 
 ## Users 
@@ -6,7 +6,7 @@
 `userRouter.get('/student/:id/stats', userController.getUserStats); `
 ### Example Json
 
-Requires - Requires UserID
+## Installation
 
 Example HTTP Request: 
 GET localhost:3007/user/student/1/stats
