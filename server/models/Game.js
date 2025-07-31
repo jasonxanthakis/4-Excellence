@@ -8,6 +8,19 @@ class Game {
         this.subject_id = data.subject_id;
     }
 
+    static async validateStudentExists(studentId) {
+        const studentCheck = await db.query(
+            `SELECT student_id FROM Students WHERE student_id = $1`,
+            [studentId]
+        );
+        
+        if (studentCheck.rows.length === 0) {
+            throw new Error(`Student with ID ${studentId} not found`);
+        }
+        
+        return true; // Student exists
+    }
+
     static async getVeryRandomQuestions() {
         try {
             const questions = await db.query(`SELECT * FROM Quiz_Questions ORDER BY RANDOM() LIMIT 10`);
@@ -89,18 +102,9 @@ class Game {
 
     static async endGame(gameId, studentId, finalScore, questionsAnswered, correctAnswers) {
         try {
-            console.log('Ending game:', { gameId, studentId, finalScore, questionsAnswered, correctAnswers });
-    
-            // check if student and game exist
-            const studentCheck = await db.query(
-                `SELECT student_id FROM Students WHERE student_id = $1`,
-                [studentId]
-            );
-            
-            if (studentCheck.rows.length === 0) {
-                throw new Error(`Student with ID ${studentId} not found`);
-            }
-    
+            await Game.validateStudentExists(studentId);
+        
+            // Only validate game exists
             const gameCheck = await db.query(
                 `SELECT game_id FROM Games WHERE game_id = $1`,
                 [gameId]
@@ -110,7 +114,6 @@ class Game {
                 throw new Error(`Game with ID ${gameId} not found`);
             }
     
-           
             const existingStats = await db.query(
                 `SELECT * FROM Student_Stats WHERE student_id = $1 AND game_id = $2`,
                 [studentId, gameId]
@@ -168,9 +171,77 @@ class Game {
     }
 
 
-
-
-
+    static async startGame(gameID, studentID, subjectName, questionType = null) {
+        try {
+            await Game.validateStudentExists(studentID);
+            
+            const gameCheck = await db.query(
+                `SELECT * FROM Games WHERE game_id = $1`,
+                [gameID]
+            );
+            
+            if (gameCheck.rows.length === 0) {
+                throw new Error(`Game with ID ${gameID} not found`);
+            }
+            
+            const gameData = gameCheck.rows[0];
+        
+            let questions;
+            
+            if (questionType && subjectName) {
+                // Use specific question type and subject
+                questions = await Game.getRandomQuestions(questionType, subjectName);
+            } else if (subjectName) {
+                // Get random questions from the specified subject (any question type)
+                const subjectResult = await db.query(
+                    `SELECT subject_id FROM subjects WHERE LOWER(subject) = $1`,
+                    [subjectName.trim().toLowerCase()]
+                );
+                
+                if (!subjectResult.rows.length) {
+                    throw new Error(`Subject "${subjectName}" not found`);
+                }
+                
+                const result = await db.query(
+                    `SELECT question_id, question, answer, options, difficulty, question_type, topic 
+                     FROM Quiz_Questions 
+                     WHERE subject_id = $1 
+                     ORDER BY RANDOM() LIMIT 10`,
+                    [subjectResult.rows[0].subject_id]
+                );
+                
+                questions = result.rows.map(row => ({
+                    id: row.question_id,
+                    question: row.question,
+                    answer: row.answer,
+                    options: row.options,
+                    difficulty: row.difficulty,
+                    topic: row.topic
+                }));
+            } else {
+                // No specific criteria, get completely random questions
+                questions = await Game.getVeryRandomQuestions();
+            }
+            
+            return {
+                message: "Game started successfully",
+                data: {
+                    gameId: parseInt(gameID),
+                    gameName: gameData.game_name,
+                    gameType: gameData.game_type,
+                    subjectId: gameData.subject_id,
+                    studentId: parseInt(studentID),
+                    startTime: new Date().toISOString(),
+                    questions: questions,
+                    totalQuestions: questions.length
+                }
+            };
+            
+        } catch (error) {
+            console.error("Error starting game:", error);
+            throw error; 
+        }
+    }
 
 }
 
